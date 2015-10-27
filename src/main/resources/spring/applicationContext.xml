@@ -5,11 +5,14 @@
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:sec="http://www.springframework.org/schema/security"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
-       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
-       
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+       http://www.springframework.org/schema/context 
+	   http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+    
 	<bean id="authenticationManager"
 		class="org.jasig.cas.authentication.AuthenticationManagerImpl">
 		
@@ -74,15 +77,15 @@
 
 	<!--
 	The name of this should remain "userDetailsService" in order for Spring Security to find it.
+	for admin to manage the 'services/manage.html'
 	 -->
     <sec:user-service id="userDetailsService">
         <sec:user name="admin" password="notused" authorities="ROLE_ADMIN" />
     </sec:user-service>
 	
 	<!-- 
-	Bean that defines the attributes that a service may return.  This example uses the Stub/Mock version.  A real implementation
-	may go against a database or LDAP server.  The id should remain "attributeRepository" though.
-	 -->
+	Bean that defines the attributes that a service may return.
+	 
 	<bean id="attributeRepository" class="org.jasig.services.persondir.support.StubPersonAttributeDao">
 		
 		<property name="backingMap">
@@ -92,8 +95,12 @@
 				<entry key="groupMembership" value="groupMembership" />
 			</map>
 		</property>
+	</bean>-->
+	<bean id="attributeRepository" class="com.yoju360.mgmt.security.CasUserAttributeDao">
+		<property name="sysResourceService" ref="sysResourceService"/>
+		<property name="sysUserService" ref="sysUserService"/>
+		<property name="sysRoleService" ref="sysRoleService"/>
 	</bean>
-	
 	<!-- 
 	Sample, in-memory data store for the ServiceRegistry. A real implementation
 	would probably want to replace this with the JPA-backed ServiceRegistry DAO
@@ -158,8 +165,8 @@
       create proxies around any beans defined in this file that match the pointcuts
       of any aspects defined in this file.
     -->
-    <aop:aspectj-autoproxy/>
-
+	<aop:aspectj-autoproxy />
+	
     <!--
       Declare the TimingAspect that we want to weave into the other beans
       defined in this config file.
@@ -183,7 +190,7 @@
 
     <bean id="persistentIdGenerator"
           class="org.jasig.cas.authentication.principal.ShibbolethCompatiblePersistentIdGenerator"
-          p:salt="qmall8"/>
+          p:salt="veryStrongSalt"/>
 
     <bean id="proxy10Handler" class="org.jasig.cas.ticket.proxy.support.Cas10ProxyHandler"/>
 
@@ -197,4 +204,29 @@
 
     <bean id="validationAnnotationBeanPostProcessor" class="org.jasig.cas.util.CustomBeanValidationPostProcessor"
             p:afterInitialization="true" />
+
+	<!-- Mybatis -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis.xml" />
+		<property name="mapperLocations" value="classpath:**/mapper/*Mapper.xml"></property>
+	</bean>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.yoju360.**.mapper" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+
+	<bean name="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+	
+	<context:component-scan base-package="com.yoju360.mgmt.security.service" />
+	
+	<tx:annotation-driven transaction-manager="transactionManager"/>
 </beans>

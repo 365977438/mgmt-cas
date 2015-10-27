@@ -72,7 +72,6 @@
 				<prop key="/authorizationFailure.html">passThroughController</prop>
 				<prop key="/403.html">passThroughController</prop>
 				<prop key="/status">healthCheckController</prop>
-				<prop key="/userInfo">userDetailsController</prop>
 			</props>
 		</property>
 		<property name="alwaysUseFullPath" value="true" />
@@ -167,8 +166,6 @@
 		p:casTicketSuffix="${host.name}">
 		<constructor-arg index="0" ref="ticketRegistry" />
 	</bean>
-	
-	<bean id="userDetailsController" class="com.yoju360.mgmt.cas.UserDetailsController"/>
 	
 	<bean id="logoutController" class="org.jasig.cas.web.LogoutController"
 		p:centralAuthenticationService-ref="centralAuthenticationService"
