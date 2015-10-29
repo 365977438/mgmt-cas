@@ -14,7 +14,8 @@
 
   <!-- As of Spring SEC 3.1 -->
   <sec:http pattern="/services/loggedout.html" security="none"/>
-
+  <sec:http pattern="/thirdparty/**" security="none"/>
+  
   <sec:http pattern="/status/**" entry-point-ref="notAuthorizedEntryPoint" use-expressions="true" auto-config="true">
     <sec:intercept-url pattern="/status" access="hasIpAddress('${cas.securityContext.status.allowedSubnet}')" />
   </sec:http>
@@ -22,8 +23,7 @@
   <sec:http entry-point-ref="casProcessingFilterEntryPoint" use-expressions="true" auto-config="true">
     <sec:logout logout-url="/services/logout.html" logout-success-url="/services/loggedOut.html"/>
     <sec:custom-filter ref="casProcessingFilter" after="CAS_FILTER"/>
-    <sec:intercept-url pattern="/services/**" access="${cas.securityContext.serviceProperties.adminRoles}"/>
-    <sec:intercept-url pattern="/userInfo/**" access="isAuthenticated()"/>
+    <sec:intercept-url pattern="/services/**" access="hasRole('ROLE_ADMIN')"/>
   </sec:http>
 
   <sec:authentication-manager alias="casAuthenticationManager">

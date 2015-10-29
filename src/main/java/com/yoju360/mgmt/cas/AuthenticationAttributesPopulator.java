@@ -37,7 +37,18 @@ import org.jasig.cas.authentication.principal.Credentials;
  *
  */
 public class AuthenticationAttributesPopulator implements AuthenticationMetaDataPopulator {
-
+	static {
+		//TODO do not verify SSL host
+		javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(
+			    new javax.net.ssl.HostnameVerifier(){
+			 
+			        public boolean verify(String hostname,
+			                javax.net.ssl.SSLSession sslSession) {
+			            return true; 
+			        }
+			    });
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.jasig.cas.authentication.AuthenticationMetaDataPopulator#populateAttributes(org.jasig.cas.authentication.Authentication, org.jasig.cas.authentication.principal.Credentials)
 	 */
