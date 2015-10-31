@@ -40,6 +40,13 @@
 		<script src="./assets/js/html5shiv.js"></script>
 		<script src="./assets/js/respond.js"></script>
 		<![endif]-->
+		<script type="text/javascript">
+			var loginServer = '<spring:eval expression="@propertyConfigurer.getProperty(\'server.name\')" />';
+			if(top.location.href.indexOf(loginServer)!=0) {
+				alert('当前系统登录已过期,将尝试重新登录');
+				window.location.reload();
+			} 
+		</script>
 	</head>
 
 	<body class="login-layout light-login">
