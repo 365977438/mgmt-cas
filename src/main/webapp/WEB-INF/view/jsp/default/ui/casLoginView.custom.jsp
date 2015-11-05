@@ -121,15 +121,15 @@
 							<div class="navbar-fixed-top align-right">
 								<br />
 								&nbsp;
-								<a id="btn-login-dark" href="#">Dark</a>
+								<a id="btn-login-dark" href="#">深沉</a>
 								&nbsp;
 								<span class="blue">/</span>
 								&nbsp;
-								<a id="btn-login-blur" href="#">Blur</a>
+								<a id="btn-login-blur" href="#">模糊</a>
 								&nbsp;
 								<span class="blue">/</span>
 								&nbsp;
-								<a id="btn-login-light" href="#">Light</a>
+								<a id="btn-login-light" href="#">浅色</a>
 								&nbsp; &nbsp; &nbsp;
 							</div>
 						</div>
