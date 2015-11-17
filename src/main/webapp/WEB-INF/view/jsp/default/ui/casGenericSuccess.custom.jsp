@@ -64,7 +64,7 @@
 										<div class="widget-main">
 											<div class="space-6"></div>
 											
-											<div class="alert alert-success"><span>登录成功!</span>&nbsp;&nbsp;<a href="javascript:go(-1);">返回</a>&nbsp;&nbsp;<a href="/logout">退出登录</a></div>
+											<div class="alert alert-success"><span>登录成功!</span>&nbsp;&nbsp;<a href="javascript:history.back();">返回</a>&nbsp;&nbsp;<a href="/logout">退出登录</a></div>
 											
 											<div class="space-6"></div>
 											
