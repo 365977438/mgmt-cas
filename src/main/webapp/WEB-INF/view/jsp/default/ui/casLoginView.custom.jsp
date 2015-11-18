@@ -41,11 +41,14 @@
 		<script src="./assets/js/respond.js"></script>
 		<![endif]-->
 		<script type="text/javascript">
+			// 地址栏不是以sso地址开头
 			var loginServer = '<spring:eval expression="@propertyConfigurer.getProperty(\'server.name\')" />';
-			if(top.location.href.indexOf(loginServer)!=0) {
+			var loginServer = loginServer.substring(loginServer.indexOf('://')+3);
+			console.log(loginServer);
+			if(top.location.href.indexOf(loginServer)<0) {
 				alert('当前系统登录已过期,将尝试重新登录');
 				window.location.reload();
-			} 
+			}
 		</script>
 	</head>
 
