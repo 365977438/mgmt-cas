@@ -64,11 +64,21 @@
 		</property>
 	</bean>
 
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="${db.driver}"/>
-		<property name="url" value="${db.url}"/>
-		<property name="username" value="${db.username}"/>
-		<property name="password" value="${db.password}"/>
+	<!-- 数据库连接池管理 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${db.driverClass}"></property>
+		<property name="jdbcUrl" value="${db.jdbcUrl}"></property>
+		<property name="user" value="${db.user}"></property>
+		<property name="password" value="${db.password}"></property>
+		<property name="initialPoolSize" value="${db.initialPoolSize}"></property>
+		<property name="maxIdleTime" value="${db.maxIdleTime}"></property>
+		<property name="maxPoolSize" value="${db.maxPoolSize}"></property>
+		<property name="minPoolSize" value="${db.minPoolSize}"></property>
+		<property name="acquireIncrement" value="${db.acquireIncrement}"></property>
+		<property name="acquireRetryDelay" value="${db.acquireRetryDelay}"></property>
+		<property name="acquireRetryAttempts" value="${db.acquireRetryAttempts}"></property>
+		<property name="breakAfterAcquireFailure" value="${db.breakAfterAcquireFailure}"></property>
 	</bean>
 	
 	<bean id="passwordEncoderBean" class="org.jasig.cas.authentication.handler.DefaultPasswordEncoder">
